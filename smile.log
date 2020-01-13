@@ -1,31 +1,29 @@
-[ 27.11.2019 - 13:16:43 ]
+[ 13.01.2020 - 18:04:58 ]
     (MSG) [2] in SMILExtract : openSMILE starting!
-[ 27.11.2019 - 13:16:43 ]
-    (MSG) [2] in SMILExtract : config file is: C:/Users/kotov-d/Documents/task#1/opensmile-2.3.0/config/avec2013.conf
-[ 27.11.2019 - 13:16:43 ]
+[ 13.01.2020 - 18:04:58 ]
+    (MSG) [2] in SMILExtract : config file is: C:/Users/kotov-d/Documents/opensmile-2.3.0/config/avec2013.conf
+[ 13.01.2020 - 18:04:58 ]
     (MSG) [2] in cComponentManager : successfully registered 95 component types.
-[ 27.11.2019 - 13:16:43 ]
+[ 13.01.2020 - 18:04:58 ]
     (MSG) [2] in instance 'lldsink' : No filename given, disabling this sink component.
-[ 27.11.2019 - 13:16:43 ]
+[ 13.01.2020 - 18:04:58 ]
     (MSG) [2] in instance 'lldhtksink' : No filename given, disabling this sink component.
-[ 27.11.2019 - 13:16:43 ]
+[ 13.01.2020 - 18:04:58 ]
     (MSG) [2] in instance 'lldarffsink' : No filename given, disabling this sink component.
-[ 27.11.2019 - 13:16:43 ]
+[ 13.01.2020 - 18:04:58 ]
     (MSG) [2] in instance 'arffsink' : No filename given, disabling this sink component.
-[ 27.11.2019 - 13:16:43 ]
+[ 13.01.2020 - 18:04:58 ]
     (MSG) [2] in instance 'htksink' : No filename given, disabling this sink component.
-[ 27.11.2019 - 13:16:43 ]
+[ 13.01.2020 - 18:04:58 ]
     (WARN) [1] in instance 'volmerge.reader' : Mismatch in input level buffer sizes (levelconf.nT). Level #0 has size 200 which is smaller than the max. input size of all input levels (500). This might cause the processing to hang unpredictably or cause incomplete processing.
-[ 27.11.2019 - 13:16:43 ]
+[ 13.01.2020 - 18:04:58 ]
     (WARN) [1] in instance 'smoNz.reader' : Mismatch in input level buffer sizes (levelconf.nT). Level #0 has size 200 which is smaller than the max. input size of all input levels (80000). This might cause the processing to hang unpredictably or cause incomplete processing.
-[ 27.11.2019 - 13:16:43 ]
+[ 13.01.2020 - 18:04:58 ]
     (WARN) [1] in instance 'avec2013_lldconcat.reader' : Mismatch in input level buffer sizes (levelconf.nT). Level #2 has size 200 which is smaller than the max. input size of all input levels (500). This might cause the processing to hang unpredictably or cause incomplete processing.
-[ 27.11.2019 - 13:16:43 ]
+[ 13.01.2020 - 18:04:58 ]
     (WARN) [1] in instance 'avec2013_llddeconcat.reader' : Mismatch in input level buffer sizes (levelconf.nT). Level #2 has size 200 which is smaller than the max. input size of all input levels (500). This might cause the processing to hang unpredictably or cause incomplete processing.
-[ 27.11.2019 - 13:16:43 ]
+[ 13.01.2020 - 18:04:58 ]
     (MSG) [2] in cComponentManager : successfully finished createInstances
                                  (47 component instances were finalised, 1 data memories were finalised)
-[ 27.11.2019 - 13:16:43 ]
+[ 13.01.2020 - 18:04:58 ]
     (MSG) [2] in cComponentManager : starting single thread processing loop
-[ 27.11.2019 - 13:16:43 ]
-    (MSG) [2] in cComponentManager : Processing finished! System ran for 2340 ticks.

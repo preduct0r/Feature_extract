@@ -41,7 +41,7 @@ class FeatureExtractorPickle:
 		:param dataset: объект класса `Dataset` с загруженным csv-файлом датасета
 		:param config: объект класса `Config` с загруженным файлом конфигурации
 		"""
-		self.dataset = dataset
+		self. dataset = dataset
 		self.config = config
 
 	def _build_multilabel(self, row):
@@ -79,12 +79,13 @@ class FeatureExtractorPickle:
 			pickle.dump(f_test, f)
 
 	def opensmile(self):
-		opensmile_root_dir = r"C:\Users\kotov-d\Documents\task#1\opensmile-2.3.0" # opensmile_params['opensmile_root_dir']
-		opensmile_config_path = r"C:\Users\kotov-d\Documents\task#1\opensmile-2.3.0\config\avec2013.conf" # opensmile_params['opensmile_config_path']
+		opensmile_root_dir = r"C:\Users\kotov-d\Documents\opensmile-2.3.0" # opensmile_params['opensmile_root_dir']
+		opensmile_config_path = r"C:\Users\kotov-d\Documents\opensmile-2.3.0\config\avec2013.conf" # opensmile_params['opensmile_config_path']
 
-		feature_path = os.path.join(self.dataset['feature_path'],
-									'opensmile')
+		feature_path = os.path.join(self.dataset['feature_path'], 'opensmile')
+
 		if not os.path.exists(feature_path):
+			# os.mkdir(feature_path)
 			os.mkdir(feature_path)
 
 		vfe = OpenSMILE(opensmile_root_dir, opensmile_config_path)
