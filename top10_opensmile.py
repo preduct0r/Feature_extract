@@ -10,7 +10,7 @@ from sklearn.metrics import f1_score, classification_report, precision_score
 
 
 
-base_dir = r'C:\Users\preductor\Google Диск\STC\базы'
+base_dir = r'C:\Users\kotov-d\Documents\BASES'
 features_path = os.path.join(base_dir, 'telecom_vad', 'feature', 'opensmile')
 
 
