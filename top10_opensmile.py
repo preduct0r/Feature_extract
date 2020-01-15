@@ -35,7 +35,6 @@ clf = LGBMClassifier(boosting_type='gbdt', num_leaves=31, max_depth=-1, learning
 
 clf.fit(x_train, y_train)
 
-print(clf.feature_importances_)
 
 dict_importance = {}
 for feature, importance in zip(range(len(clf.feature_importances_)), clf.feature_importances_):
@@ -76,10 +75,10 @@ for i in range(x_train.shape[1]):
 corr_matrix = pd.DataFrame(np.corrcoef(vecs))
 
 # почему-то 0 и 1512 фича считаются некорректно
-# def func(x):
-#     return x
+def func(x):
+    return 1-x
 
-corr_matrix = abs(corr_matrix.drop(columns=[0,1512], index=[0,1512]))
+corr_matrix = func(abs(corr_matrix.drop(columns=[0,1512], index=[0,1512])))
 
 
 # # смотрим сколько значений корреляции выше трешхолда
@@ -140,6 +139,8 @@ print((corr_matrix.sum().sum()-corr_matrix.shape[0])/(corr_matrix.shape[0]**2-co
 
 
 # проверка с помощью обучения модели
+from sklearn.svm import SVC
+clf=SVC()
 pred = clf.fit(x_train[:,best_indexes], y_train).predict(x_test[:,best_indexes])
 print("на фичах полученных при помощи корреляции f1 macro {}".format(round(f1_score(y_test, pred, average='macro'),3)))
 
