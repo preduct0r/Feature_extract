@@ -5,6 +5,7 @@ import sys, os
 import pickle
 import numpy as np
 import pandas as pd
+from matplotlib import pyplot as plt
 from lightgbm import LGBMClassifier
 from sklearn.metrics import f1_score, classification_report, precision_score
 
@@ -52,9 +53,9 @@ with open(os.path.join(features_path, 'y_test.pkl'), 'rb') as f:
 #
 # # with open(os.path.join(r'C:\Users\kotov-d\Documents', 'clf' + '.pkl'), 'rb') as f:
 # #     clf = pickle.load(f)
-#
+
+# # вывод предсказанных и реальных значений
 # print(clf.classes_.tolist()+['pred','y'])
-#
 # print(pd.DataFrame(data=np.hstack((clf.predict_proba(x_test), clf.predict(x_test).reshape(-1,1),
 #                                   y_test.values.reshape(-1,1))), columns=clf.classes_.tolist()+['pred','y']))
 
@@ -63,18 +64,76 @@ with open(os.path.join(features_path, 'y_test.pkl'), 'rb') as f:
 #================================================================================================
 #================================================================================================
 
-from scipy.stats import spearmanr
-from scipy.stats import pearsonr
+from sklearn.cluster import AgglomerativeClustering
+from scipy.cluster.hierarchy import linkage
+from scipy.cluster.hierarchy import dendrogram
 
 vecs = []
 for i in range(x_train.shape[1]):
     vecs.append(x_train[:,i])
 corr_matrix = pd.DataFrame(np.corrcoef(vecs))
 
-# почему-то первая фича дает все нули
-# print(x_train[:,0])
+# почему-то 0 и 1512 фича считаются некорректно
+# def func(x):
+#     return x
 
-threshold = 0.9
-print((corr_matrix[corr_matrix>threshold].count().sum()-corr_matrix.shape[0])//2, "корреляций")
-print(round((corr_matrix[corr_matrix>threshold].count().sum()-2269)/(2269**2)*100, 3), "%")
+corr_matrix = abs(corr_matrix.drop(columns=[0,1512], index=[0,1512]))
+
+
+# # смотрим сколько значений корреляции выше трешхолда
+# threshold = 0.9
+# print((corr_matrix[corr_matrix>threshold].count().sum()-corr_matrix.shape[0])//2, "корреляций")
+# print(round((corr_matrix[corr_matrix>threshold].count().sum()-2269)/(2269**2)*100, 3), "%")
+
+
+
+# # отрисовка дендограммы
+# Z = linkage(corr_matrix, 'single')
+# plt.figure(figsize=(25, 25))
+# dn = dendrogram(Z)
+# plt.show()
+
+
+
+# разбиваем фичи по кластерам
+feature_indexes = list(range(x_train.shape[1]))
+del feature_indexes[0]
+del feature_indexes[1512]
+
+clustering = AgglomerativeClustering(n_clusters=10).fit(corr_matrix)
+
+clustering_labels = pd.DataFrame(columns=['feature', 'label'])
+clustering_labels['feature'] = feature_indexes
+clustering_labels['label'] = clustering.labels_
+with open(r"C:\Users\kotov-d\Documents\TASKS\top_features\clustering_labels.pkl", "wb") as f:
+    pickle.dump(clustering_labels, f)
+
+
+
+
+# находим индексы лучших фичей
+with open(r"C:\Users\kotov-d\Documents\TASKS\top_features\clustering_labels.pkl", "rb") as f:
+    clustering_labels = pickle.load(f)
+
+best_indexes = []
+
+grouped = clustering_labels.groupby('label')
+for name,group in grouped:
+   curr_features = group.feature.to_list()
+   group_corr_matrix = corr_matrix[corr_matrix.index.isin(curr_features)].loc[:,curr_features]
+   group_corr_matrix = group_corr_matrix.assign(summ=lambda x: group_corr_matrix.sum())
+   max_index = group_corr_matrix.summ.idxmax()
+   best_indexes.append(max_index)
+
+print(best_indexes)
+
+
+
+# проверка полученных результатов
+
+print(corr_matrix[corr_matrix.index.isin(best_indexes)].loc[:,best_indexes])
+print((corr_matrix[corr_matrix.index.isin(best_indexes)].loc[:,best_indexes].sum().sum()-10)/(10**2-10))
+print((corr_matrix.sum().sum()-2267)/(2267**2-2267))
+
+
 
