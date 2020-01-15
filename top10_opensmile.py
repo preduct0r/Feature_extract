@@ -29,24 +29,26 @@ with open(os.path.join(features_path, 'y_test.pkl'), 'rb') as f:
 #================================================================================================
 #================================================================================================
 
-# clf = LGBMClassifier(boosting_type='gbdt', num_leaves=31, max_depth=-1, learning_rate=0.001, n_estimators=1000,
-#                          objective=None, min_split_gain=0, min_child_weight=3, min_child_samples=10, subsample=0.8,
-#                          subsample_freq=1, colsample_bytree=0.7, reg_alpha=0.3, reg_lambda=0, seed=17)
-#
-# clf.fit(x_train, y_train)
-#
-# print(clf.feature_importances_)
-#
-# dict_importance = {}
-# for feature, importance in zip(range(len(clf.feature_importances_)), clf.feature_importances_):
-#     dict_importance[feature] = importance
-#
-# best_features = []
-#
-# for idx, w in enumerate(sorted(dict_importance, key=dict_importance.get, reverse=True)):
-#     if idx == 100:
-#         break
-#     best_features.append(w)
+clf = LGBMClassifier(boosting_type='gbdt', num_leaves=31, max_depth=-1, learning_rate=0.001, n_estimators=1000,
+                         objective=None, min_split_gain=0, min_child_weight=3, min_child_samples=10, subsample=0.8,
+                         subsample_freq=1, colsample_bytree=0.7, reg_alpha=0.3, reg_lambda=0, seed=17)
+
+clf.fit(x_train, y_train)
+
+print(clf.feature_importances_)
+
+dict_importance = {}
+for feature, importance in zip(range(len(clf.feature_importances_)), clf.feature_importances_):
+    dict_importance[feature] = importance
+
+best_features = []
+
+for idx, w in enumerate(sorted(dict_importance, key=dict_importance.get, reverse=True)):
+    if idx == 10:
+        break
+    best_features.append(w)
+
+print(best_features)
 #
 # with open(os.path.join(r'C:\Users\kotov-d\Documents', 'clf' + '.pkl'), 'wb') as f:
 #     pickle.dump(clf, f, protocol=2)
@@ -130,10 +132,19 @@ print(best_indexes)
 
 
 # проверка полученных результатов
+best_matrix = corr_matrix[corr_matrix.index.isin(best_indexes)]
+# print(best_matrix)
+print((best_matrix.sum().sum()-best_matrix.shape[0])/(best_matrix.shape[0]**2-best_matrix.shape[0]))
+print((corr_matrix.sum().sum()-corr_matrix.shape[0])/(corr_matrix.shape[0]**2-corr_matrix.shape[0]))
 
-print(corr_matrix[corr_matrix.index.isin(best_indexes)].loc[:,best_indexes])
-print((corr_matrix[corr_matrix.index.isin(best_indexes)].loc[:,best_indexes].sum().sum()-10)/(10**2-10))
-print((corr_matrix.sum().sum()-2267)/(2267**2-2267))
+
+
+# проверка с помощью обучения модели
+pred = clf.fit(x_train[:,best_indexes], y_train).predict(x_test[:,best_indexes])
+print("на фичах полученных при помощи корреляции f1 macro {}".format(round(f1_score(y_test, pred, average='macro'),3)))
+
+pred = clf.fit(x_train[:,best_features], y_train).predict(x_test[:,best_features])
+print("на фичах полученных при помощи feature_importances f1 macro {}".format(round(f1_score(y_test, pred, average='macro'),3)))
 
 
 
