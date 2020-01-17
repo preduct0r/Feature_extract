@@ -150,20 +150,19 @@ def test_100_features(x_train, y_train, x_test, y_test):
     best_lgbm_features = []
 
     for idx, w in enumerate(sorted(dict_importance, key=dict_importance.get, reverse=True)):
-        if idx == 1:
+        if idx == 100:
             break
         best_lgbm_features.append(w)
 
     clf.fit(x_train.iloc[:,best_lgbm_features], y_train)
 
-    pred = clf.predict(x_test.iloc[:,best_lgbm_features])
+    pred = clf.predict(x_train.iloc[:,best_lgbm_features])
 
-
-    print(round(f1_score(y_test, pred, average='macro'),30))
+    print(np.unique(pred, return_counts=True))
+    print(round(f1_score(y_train, pred, average='macro'),30))
 
 test_100_features(x_train, y_train, x_test, y_test)
 test_100_features(x_train.iloc[:,best_indexes], y_train, x_test.iloc[:,best_indexes], y_test)
-print(y_train.value_counts())
 
 
 
