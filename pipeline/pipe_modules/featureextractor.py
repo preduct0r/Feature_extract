@@ -4,7 +4,7 @@
 а также выделение признаков – raw (не извлекать признаки, вернуть набор амплитуд), fft, mel, mfcc.
 """
 
-
+import shutil
 import h5py
 import librosa
 from librosa.core import stft
@@ -41,7 +41,7 @@ class FeatureExtractorPickle:
 		:param dataset: объект класса `Dataset` с загруженным csv-файлом датасета
 		:param config: объект класса `Config` с загруженным файлом конфигурации
 		"""
-		self. dataset = dataset
+		self.dataset = dataset
 		self.config = config
 
 	def _build_multilabel(self, row):
@@ -79,8 +79,8 @@ class FeatureExtractorPickle:
 			pickle.dump(f_test, f)
 
 	def opensmile(self):
-		opensmile_root_dir = r"C:\Users\kotov-d\Documents\opensmile-2.3.0" # opensmile_params['opensmile_root_dir']
-		opensmile_config_path = r"C:\Users\kotov-d\Documents\opensmile-2.3.0\config\avec2013.conf" # opensmile_params['opensmile_config_path']
+		opensmile_root_dir = r"C:\Users\preductor\Google_Drive\STC\Some_Files\Всякий_Софт\opensmile-2.3.0" # opensmile_params['opensmile_root_dir']
+		opensmile_config_path = r"C:\Users\preductor\Google_Drive\STC\Some_Files\Всякий_Софт\opensmile-2.3.0\config\gemaps\eGeMAPSv01a.conf" # opensmile_params['opensmile_config_path']
 
 		feature_path = os.path.join(self.dataset['feature_path'], 'opensmile')
 
@@ -102,7 +102,9 @@ class FeatureExtractorPickle:
 				y_train.append(self._build_multilabel(row))
 				f_train.append(row['cur_name'])
 				print('done.')
-			except:
+			except Exception as e:
+				print(e)
+				break
 				print('error calc voice features!')
 
 		x_test = []
@@ -116,7 +118,10 @@ class FeatureExtractorPickle:
 				y_test.append(self._build_multilabel(row))
 				f_test.append(row['cur_name'])
 				print('done.')
-			except:
+			except Exception as e:
+				print(e)
+				shutil.rmtree(feature_path)
+				break
 				print('error calc voice features!')
 
 		# with open(os.path.join('C:/Users/kotov-d/Documents/task#2/iemocap', 'train_test_data' + '.pickle'), 'wb') as f:

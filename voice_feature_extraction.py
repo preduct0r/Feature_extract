@@ -7,6 +7,7 @@ import numpy as np
 class OpenSMILE():
     def __init__(self, root_dir, config_path):
         self.opensmile_dir = os.path.expanduser(root_dir)
+        # self.opensmile_dir = re.sub("\\\\", '/', self.opensmile_dir)
         self.opensmile_conf = config_path
         self.verify_dependencies()
 
@@ -22,7 +23,7 @@ class OpenSMILE():
 
         try:
             command = "ffmpeg -version"
-            output = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT)
+            output = subprocess.check_output(command, shell=False, stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError:
             raise Exception("Can't find ffmpeg executable")
         else:
@@ -33,7 +34,7 @@ class OpenSMILE():
 
         try:
             command = self.opensmile_dir + "/bin/Win32/SMILExtract_Release -h"
-            output = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT)
+            output = subprocess.check_output(command, shell=False, stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError:
             raise Exception("Can't find SMILExtract executable")
         else:
@@ -52,14 +53,14 @@ class OpenSMILE():
         ## extract features with openSMILE
         ## example: SMILExtract -I output.wav -C ./openSMILE-2.1.0/config/gemaps/GeMAPSv01a.conf --csvoutput features.csv
         ##----------------------------------------------------------
-        features_file = os.path.dirname(wav_path) + '/temp.csv'
+        features_file = os.path.dirname(wav_path) + '\\temp.csv'
         command = "{opensmile_dir}/bin/Win32/SMILExtract_Release -I {input_file} -C {conf_file} --csvoutput {output_file}".format(
                         opensmile_dir=self.opensmile_dir,
                         input_file=wav_path,
                         conf_file=self.opensmile_conf,
                         output_file=features_file)
         command = command.replace('\\', '/')
-        output = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT)
+        output = subprocess.check_output(command, shell=False, stderr=subprocess.STDOUT)
 
         ##----------------------------------------------------------
         ## merge metadata and features

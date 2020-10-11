@@ -5,7 +5,7 @@ from pipeline.pipe_modules.featureextractor import FeatureExtractorPickle
 
 def main():
     # прогрузить конфигурационный файл
-    config = Config(r'C:\Users\kotov-d\PycharmProjects\Feature_extract\pre_sff_config.yml')
+    config = Config(r'C:\Users\preductor\PycharmProjects\Feature_extract\pre_sff_config.yml')
 
     dataset = DatasetNew(config)
 
